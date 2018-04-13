@@ -23,6 +23,13 @@ class RegistrationController {
     AttendeeService attendeeService;
 
 
+    @RequestMapping("/ver")
+    @ResponseBody
+    String getVersion()
+    {
+        return "ver 2.0";
+    }
+
     @RequestMapping(value = "/admin", method = RequestMethod.GET)
     String home(Model model) {
         model.addAttribute("attendees", attendeeService.getAttendee());
@@ -35,12 +42,24 @@ class RegistrationController {
         return "program";
     }
 
+    @RequestMapping(value = "/landing")
+    String getLanding()
+    {
+        return "landing";
+    }
+
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public String register(@ModelAttribute Attendee attendee, RedirectAttributes redirectAttributes)
     {
         attendeeService.addAttendee(attendee);
         redirectAttributes.addFlashAttribute("flash", "Registered "+ attendee.getEmail());
         return "redirect:/";
+    }
+
+    @RequestMapping("/myname")
+    public String myname()
+    {
+        return "DeClue";
     }
 
     @RequestMapping(value = "/admin", method = RequestMethod.POST, consumes = MediaType.ALL_VALUE)
@@ -60,5 +79,6 @@ class RegistrationController {
         }
         modelAndView.addObject("attendees", attendeeService.getAttendee());
         return modelAndView;
+
     }
 }
